@@ -7,8 +7,7 @@ import 'ScreenArguments.dart';
 import 'dart:convert';
 import 'package:provider/provider.dart';
 
-void main() => runApp(
-    ChangeNotifierProvider(create: (context) => CartModel(), child: MyApp()));
+void main() => runApp(MyApp());
 
 FirebaseDatabase database = new FirebaseDatabase();
 
@@ -154,6 +153,9 @@ class QueryTickets extends StatefulWidget {
 
 class _QueryTicketsState extends State<QueryTickets> {
   var recentJobsRef = FirebaseDatabase.instance.reference().child('employees');
+  /*var recentJobsRef2 = FirebaseDatabase.instance
+      .reference()
+      .child('employees/${args.key}/children');*/
 
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -167,13 +169,12 @@ class _QueryTicketsState extends State<QueryTickets> {
 
           //print(data);
           data.forEach((index, data) => item.add({"key": index, ...data}));
-          //print(item);
+          print(item);
 
           return ListView.builder(
               shrinkWrap: true,
               itemCount: item.length,
               itemBuilder: (context, index) {
-                print(countChild);
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
@@ -194,9 +195,7 @@ class _QueryTicketsState extends State<QueryTickets> {
                           item[index]['position'] +
                           ' ' +
                           'Количество детей'),
-                      trailing: Text(
-                          Provider.of<CartModel>(context, listen: false)
-                              .toString()), //${args.countChild}
+                      trailing: Text(''), //${args.countChild}
                       onTap: () {
                         setState(() {
                           lastName = item[index]['lastName'];

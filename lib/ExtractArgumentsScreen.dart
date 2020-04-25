@@ -20,7 +20,6 @@ String middleNameChild;
 String birthdayChild;
 String key;
 int countChild;
-int myCountChild;
 
 FirebaseDatabase database = new FirebaseDatabase();
 
@@ -129,6 +128,7 @@ class _SetGetChildrenState extends State<SetGetChildren> {
               textAlign: TextAlign.center,
             ),
             QueryTicketsChild(),
+
             //Text(item.length)
           ],
         ),
@@ -139,10 +139,9 @@ class _SetGetChildrenState extends State<SetGetChildren> {
   void passFirebase() {
     final ScreenArguments args = ModalRoute.of(context).settings.arguments;
     if (_formKeyChild.currentState.validate()) {
-      //id++;
       FirebaseDatabase.instance
           .reference()
-          .child('employees/${args.key}/children')
+          .child('employees/${args.key}/children') //${args.key}
           .push()
           .set({
         'lastNameChild': lastNameChild,
@@ -167,7 +166,7 @@ class _QueryTicketsChildState extends State<QueryTicketsChild> {
 
     var recentJobsRef = FirebaseDatabase.instance
         .reference()
-        .child('employees/${args.key}/children');
+        .child('employees/${args.key}/children'); //${args.key}
 
     return StreamBuilder(
       stream: recentJobsRef.onValue,
@@ -228,5 +227,3 @@ class _QueryTicketsChildState extends State<QueryTicketsChild> {
     );
   }
 }
-
-class CartModel extends ChangeNotifier {}
