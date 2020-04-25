@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "922117050870",
+    "firebase_url": "https://test-ekf.firebaseio.com",
+    "project_id": "test-ekf",
+    "storage_bucket": "test-ekf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:922117050870:android:b770ca5c87e5e61fa937d7",
+        "android_client_info": {
+          "package_name": "ru.iswift.ekf"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "922117050870-o0se644t68g04lp4uhst5ir047bbgpif.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClU7wXCwqc6VFW0j5l_C20tBBSSwlsJ6w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "922117050870-o0se644t68g04lp4uhst5ir047bbgpif.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
