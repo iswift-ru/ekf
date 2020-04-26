@@ -141,9 +141,17 @@ class _MyHomePageState extends State<MyHomePage> {
         'birthday': birthday,
         'position': position,
       });
+
+      /*var newPostKey =
+          FirebaseDatabase.instance.reference().child('employees').push().key;
+      print('newPostKey: $newPostKey');*/
+
     }
+
     _formKey.currentState.save();
   }
+
+  
 }
 
 class QueryTickets extends StatefulWidget {
@@ -169,7 +177,7 @@ class _QueryTicketsState extends State<QueryTickets> {
 
           //print(data);
           data.forEach((index, data) => item.add({"key": index, ...data}));
-          print(item);
+          //print(item);
 
           return ListView.builder(
               shrinkWrap: true,
