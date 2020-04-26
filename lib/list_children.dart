@@ -2,12 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'ExtractArgumentsScreen.dart';
 import 'ScreenArguments.dart';
-import 'dart:convert';
-import 'package:provider/provider.dart';
-
-import 'main.dart';
 
 final myControllerFirstNameChild = TextEditingController(text: 'Никита');
 final myControllerLastNameChild = TextEditingController(text: 'Лобазин');
@@ -19,17 +14,16 @@ String lastNameChild;
 String middleNameChild;
 String birthdayChild;
 String key;
-int countChild;
 
 FirebaseDatabase database = new FirebaseDatabase();
 
-class ExtractArgumentsScreen extends StatefulWidget {
+class ListChildren extends StatefulWidget {
   static const routeName = '/extractArguments';
   @override
-  _ExtractArgumentsScreenState createState() => _ExtractArgumentsScreenState();
+  _ListChildrenState createState() => _ListChildrenState();
 }
 
-class _ExtractArgumentsScreenState extends State<ExtractArgumentsScreen> {
+class _ListChildrenState extends State<ListChildren> {
   @override
   Widget build(BuildContext context) {
     final ScreenArguments args = ModalRoute.of(context).settings.arguments;
@@ -61,79 +55,80 @@ class _SetGetChildrenState extends State<SetGetChildren> {
     final ScreenArguments args = ModalRoute.of(context).settings.arguments;
     // TODO: implement build
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         body: Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Form(
-        key: _formKeyChild,
-        child: Column(
-          children: <Widget>[
-            TextFormField(
-                controller: myControllerLastNameChild,
-                decoration: InputDecoration(labelText: 'Фамилия ребёнка'),
-                // ignore: missing_return
-                validator: (value) {
-                  if (value.isEmpty)
-                    return 'Пожалуйста введите фамилию ребёнка';
-                  else {
-                    lastNameChild = myControllerLastNameChild.text;
-                  }
-                }),
-            TextFormField(
-                decoration: InputDecoration(labelText: 'Имя'),
-                controller: myControllerFirstNameChild,
-                // ignore: missing_return
-                validator: (value) {
-                  if (value.isEmpty)
-                    return 'Пожалуйста введите имя ребёнка';
-                  else {
-                    firstNameChild = myControllerFirstNameChild.text;
-                  }
-                }),
-            TextFormField(
-                decoration: InputDecoration(labelText: 'Отчество'),
-                controller: myControllerMiddleNameChild,
-                // ignore: missing_return
-                validator: (value) {
-                  if (value.isEmpty)
-                    return 'Пожалуйста введите отчество ребёнка';
-                  else {
-                    middleNameChild = myControllerMiddleNameChild.text;
-                  }
-                }),
-            TextFormField(
-                decoration: InputDecoration(labelText: 'Дата рождения'),
-                controller: myControllerBirthdayChild,
-                // ignore: missing_return
-                validator: (value) {
-                  if (value.isEmpty)
-                    return 'Пожалуйста введите дату рождения ребёнка';
-                  else {
-                    birthdayChild = myControllerBirthdayChild.text;
-                  }
-                }),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: RaisedButton(
-                child: Text(
-                  'Добавить ребёнка в базу',
-                  style: TextStyle(fontSize: 16, color: Colors.white),
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKeyChild,
+            child: Column(
+              children: <Widget>[
+                TextFormField(
+                    controller: myControllerLastNameChild,
+                    decoration: InputDecoration(labelText: 'Фамилия ребёнка'),
+                    // ignore: missing_return
+                    validator: (value) {
+                      if (value.isEmpty)
+                        return 'Пожалуйста введите фамилию ребёнка';
+                      else {
+                        lastNameChild = myControllerLastNameChild.text;
+                      }
+                    }),
+                TextFormField(
+                    decoration: InputDecoration(labelText: 'Имя'),
+                    controller: myControllerFirstNameChild,
+                    // ignore: missing_return
+                    validator: (value) {
+                      if (value.isEmpty)
+                        return 'Пожалуйста введите имя ребёнка';
+                      else {
+                        firstNameChild = myControllerFirstNameChild.text;
+                      }
+                    }),
+                TextFormField(
+                    decoration: InputDecoration(labelText: 'Отчество'),
+                    controller: myControllerMiddleNameChild,
+                    // ignore: missing_return
+                    validator: (value) {
+                      if (value.isEmpty)
+                        return 'Пожалуйста введите отчество ребёнка';
+                      else {
+                        middleNameChild = myControllerMiddleNameChild.text;
+                      }
+                    }),
+                TextFormField(
+                    decoration: InputDecoration(labelText: 'Дата рождения'),
+                    controller: myControllerBirthdayChild,
+                    // ignore: missing_return
+                    validator: (value) {
+                      if (value.isEmpty)
+                        return 'Пожалуйста введите дату рождения ребёнка';
+                      else {
+                        birthdayChild = myControllerBirthdayChild.text;
+                      }
+                    }),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: RaisedButton(
+                    child: Text(
+                      'Добавить ребёнка в базу',
+                      style: TextStyle(fontSize: 16, color: Colors.white),
+                    ),
+                    color: Colors.blue,
+                    onPressed: passFirebase,
+                  ),
                 ),
-                color: Colors.blue,
-                onPressed: passFirebase,
-              ),
-            ),
-            Text(
-              'Список детей сотрудника ${args.firstName} ${args.lastName}  ${args.middleName}:',
-              style: TextStyle(fontSize: 20, letterSpacing: 0.75),
-              textAlign: TextAlign.center,
-            ),
-            QueryTicketsChild(),
+                Text(
+                  'Список детей сотрудника ${args.firstName} ${args.lastName}  ${args.middleName}:',
+                  style: TextStyle(fontSize: 20, letterSpacing: 0.75),
+                  textAlign: TextAlign.center,
+                ),
+                ListEmployeesChild(),
 
-            //Text(item.length)
-          ],
-        ),
-      ),
-    ));
+                //Text(item.length)
+              ],
+            ),
+          ),
+        ));
   }
 
   void passFirebase() {
@@ -154,13 +149,12 @@ class _SetGetChildrenState extends State<SetGetChildren> {
   }
 }
 
-class QueryTicketsChild extends StatefulWidget {
+class ListEmployeesChild extends StatefulWidget {
   @override
-  _QueryTicketsChildState createState() => _QueryTicketsChildState();
+  _ListEmployeesChildState createState() => _ListEmployeesChildState();
 }
 
-class _QueryTicketsChildState extends State<QueryTicketsChild> {
-  int countChild;
+class _ListEmployeesChildState extends State<ListEmployeesChild> {
   Widget build(BuildContext context) {
     final ScreenArguments args = ModalRoute.of(context).settings.arguments;
 
@@ -181,10 +175,6 @@ class _QueryTicketsChildState extends State<QueryTicketsChild> {
           data.forEach((index, data) {
             item.add({"key": index, ...data});
           });
-
-          countChild = item.length;
-
-          //print(countChild);
 
           return ListView.builder(
               shrinkWrap: true,
@@ -208,7 +198,6 @@ class _QueryTicketsChildState extends State<QueryTicketsChild> {
                         Icons.supervisor_account,
                         size: 36,
                       ),
-                      onTap: () {},
                     ),
                   ),
                 );

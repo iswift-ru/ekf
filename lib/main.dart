@@ -2,19 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'ExtractArgumentsScreen.dart';
+import 'list_children.dart';
 import 'ScreenArguments.dart';
-import 'dart:convert';
-import 'package:provider/provider.dart';
 
 void main() => runApp(MyApp());
 
 FirebaseDatabase database = new FirebaseDatabase();
 
-final myControllerFirstName = TextEditingController(text: 'Artem');
-final myControllerLastName = TextEditingController(text: 'Lobazin');
+final myControllerFirstName = TextEditingController(text: 'Артём');
+final myControllerLastName = TextEditingController(text: 'Васильев');
 final myControllerMiddleName = TextEditingController(text: 'Геннадьевич');
-final myControllerBirthday = TextEditingController(text: '16.11.1983');
+final myControllerBirthday = TextEditingController(text: '16.11.1981');
 final myControllerPosition = TextEditingController(text: 'Стажёр');
 
 String firstName;
@@ -25,11 +23,10 @@ String position;
 String key;
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(routes: {
-      ExtractArgumentsScreen.routeName: (context) => ExtractArgumentsScreen(),
+      ListChildren.routeName: (context) => ListChildren(),
     }, home: MyHomePage());
   }
 }
@@ -45,6 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text('EKF'),
         ),
@@ -125,7 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: TextStyle(fontSize: 20, letterSpacing: 0.75),
                   textAlign: TextAlign.center,
                 ),
-                QueryTickets(),
+                ListEmployees(),
               ],
             ),
           ),
@@ -141,29 +139,19 @@ class _MyHomePageState extends State<MyHomePage> {
         'birthday': birthday,
         'position': position,
       });
-
-      /*var newPostKey =
-          FirebaseDatabase.instance.reference().child('employees').push().key;
-      print('newPostKey: $newPostKey');*/
-
     }
 
-    _formKey.currentState.save();
+    //_formKey.currentState.save();
   }
-
-  
 }
 
-class QueryTickets extends StatefulWidget {
+class ListEmployees extends StatefulWidget {
   @override
-  _QueryTicketsState createState() => _QueryTicketsState();
+  _ListEmployeesState createState() => _ListEmployeesState();
 }
 
-class _QueryTicketsState extends State<QueryTickets> {
+class _ListEmployeesState extends State<ListEmployees> {
   var recentJobsRef = FirebaseDatabase.instance.reference().child('employees');
-  /*var recentJobsRef2 = FirebaseDatabase.instance
-      .reference()
-      .child('employees/${args.key}/children');*/
 
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -173,11 +161,11 @@ class _QueryTicketsState extends State<QueryTickets> {
             !snap.hasError &&
             snap.data.snapshot.value != null) {
           Map data = snap.data.snapshot.value;
+
           List item = [];
 
           //print(data);
           data.forEach((index, data) => item.add({"key": index, ...data}));
-          //print(item);
 
           return ListView.builder(
               shrinkWrap: true,
@@ -191,19 +179,11 @@ class _QueryTicketsState extends State<QueryTickets> {
                         border: Border.all(width: 1.0, color: Colors.blue)),
                     child: ListTile(
                       selected: true,
-                      title: Text(item[index]['lastName'] +
-                          ' ' +
-                          item[index]['firstName'] +
-                          ' ' +
-                          item[index]['middleName']),
-                      subtitle: Text('Дата рождения ' +
-                          item[index]['birthday'] +
-                          ' ' +
-                          'Должность ' +
-                          item[index]['position'] +
-                          ' ' +
-                          'Количество детей'),
-                      trailing: Text(''), //${args.countChild}
+                      title: Text(
+                          '${item[index]['lastName']} ${item[index]['firstName']} ${item[index]['middleName']}'),
+                      subtitle: Text(
+                          'Дата рождения ${item[index]['birthday']}, Должность - ${item[index]['position']}'),
+                      trailing: Icon(Icons.child_care),
                       onTap: () {
                         setState(() {
                           lastName = item[index]['lastName'];
@@ -212,10 +192,10 @@ class _QueryTicketsState extends State<QueryTickets> {
                           birthday = item[index]['birthday'];
                           position = item[index]['position'];
                           key = item[index]['key'];
-                          //print(lastName);
+
                           Navigator.pushNamed(
                             context,
-                            ExtractArgumentsScreen.routeName,
+                            ListChildren.routeName,
                             arguments: ScreenArguments(firstName, lastName,
                                 middleName, birthday, position, key),
                           );
